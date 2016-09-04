@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-    <modelVersion>4.0.0</modelVersion>
-    <packaging>war</packaging>
-    <version>0.0.1</version>
+  <modelVersion>4.0.0</modelVersion>
+  <packaging>war</packaging>
+  <version>0.0.1</version>
 
-    <groupId>xyz.juanes.jviz</groupId>
-    <artifactId>registry</artifactId>
+  <groupId>xyz.juanes.jviz</groupId>
+  <artifactId>registry</artifactId>
 
-    <properties>
-        <app.id>jviz23d</app.id>
-        <app.version>1</app.version>
-        <appengine.version>1.9.42</appengine.version>
-        <archiveClasses>true</archiveClasses>
-    </properties>
+  <properties>
+      <app.id>jviz23d</app.id>
+      <app.version>1</app.version>
+      <appengine.version>1.9.42</appengine.version>
+      <archiveClasses>true</archiveClasses>
+  </properties>
 
-    <prerequisites>
-        <maven>3.3.9</maven>
-    </prerequisites>
+  <prerequisites>
+      <maven>3.3.9</maven>
+  </prerequisites>
 
-    <dependencies>
-        <!-- Compile/runtime dependencies -->
-        <dependency>
-            <groupId>com.google.appengine</groupId>
-            <artifactId>appengine-api-1.0-sdk</artifactId>
-            <version>${appengine.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
+  <dependencies>
+      <!-- Compile/runtime dependencies -->
+      <dependency>
+          <groupId>com.google.appengine</groupId>
+          <artifactId>appengine-api-1.0-sdk</artifactId>
+          <version>${appengine.version}</version>
+      </dependency>
+      <dependency>
+          <groupId>javax.servlet</groupId>
+          <artifactId>servlet-api</artifactId>
+          <version>2.5</version>
+          <scope>provided</scope>
+      </dependency>
+  </dependencies>
 
-    <build>
-        <!-- for hot reload of the web application -->
-        <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <version>3.3</version>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>1.7</source>
-                    <target>1.7</target>
-                </configuration>
-            </plugin>
-            <!-- Parent POM defines ${appengine.sdk.version} (updates frequently). -->
-            <plugin>
-                <groupId>com.google.appengine</groupId>
-                <artifactId>appengine-maven-plugin</artifactId>
-                <version>${appengine.version}</version>
-            </plugin>
-        </plugins>
-    </build>
+  <build>
+      <!-- for hot reload of the web application -->
+      <outputDirectory>${project.build.directory}/${project.build.finalName}/WEB-INF/classes</outputDirectory>
+      <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <version>3.3</version>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <configuration>
+                  <source>1.7</source>
+                  <target>1.7</target>
+              </configuration>
+          </plugin>
+          <!-- Parent POM defines ${appengine.sdk.version} (updates frequently). -->
+          <plugin>
+              <groupId>com.google.appengine</groupId>
+              <artifactId>appengine-maven-plugin</artifactId>
+              <version>${appengine.version}</version>
+          </plugin>
+      </plugins>
+  </build>
 </project>
