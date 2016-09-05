@@ -12,8 +12,8 @@ public class SplitUrl
     //Get the path and remove the first /
     //This is because the getPathInfo method returns a path like "/jviz", and the first
     //element of the split method is an empty string.
-    String pathInfo = request.getPathInfo().substring(1);
-
+    String pathInfo = request.getPathInfo();
+    
     //Check for empty or null pathinfo
     if(pathInfo == "" || pathInfo == null)
     {
@@ -22,7 +22,7 @@ public class SplitUrl
     }
 
     //Split the url
-    String[] url = pathInfo.split("/");
+    String[] url = pathInfo.substring(1).split("/");
 
     //Return the url
     return url;
