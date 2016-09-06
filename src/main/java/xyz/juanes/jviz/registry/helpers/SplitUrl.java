@@ -13,7 +13,7 @@ public class SplitUrl
     //This is because the getPathInfo method returns a path like "/jviz", and the first
     //element of the split method is an empty string.
     String pathInfo = request.getPathInfo();
-    
+
     //Check for empty or null pathinfo
     if(pathInfo == "" || pathInfo == null)
     {
