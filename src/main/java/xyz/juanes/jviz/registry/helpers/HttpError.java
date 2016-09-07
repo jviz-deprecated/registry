@@ -1,6 +1,5 @@
 package xyz.juanes.jviz.registry.helpers;
 
-//Import dependencies
 import javax.servlet.http.HttpServletResponse;
 import org.json.simple.JSONObject;
 import java.io.IOException;
