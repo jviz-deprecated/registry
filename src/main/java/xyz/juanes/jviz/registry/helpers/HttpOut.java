@@ -7,11 +7,30 @@ import java.io.IOException;
 //Import config
 import xyz.juanes.jviz.registry.Config;
 
-public class HttpError
+public class HttpOut
 {
-  //Send a new error
-  public static void send(HttpServletResponse response, Integer code, String message) throws IOException
+  //Send response
+  public static void send(HttpServletResponse response, Integer code, JSONObject obj) throws IOException
   {
+    //Set the content type
+    response.setContentType("application/json");
+
+    //Set the status code
+    response.setStatus(code);
+
+    //Print the response
+    response.getWriter().println(obj.toJSONString());
+
+    //Exit
+    return;
+  }
+
+  //Send a new error
+  public static void error(HttpServletResponse response, Integer code, String message) throws IOException
+  {
+    //Set the content type
+    response.setContentType("application/json");
+
     //Generate the new json object
     JSONObject obj = new JSONObject();
 
@@ -26,5 +45,8 @@ public class HttpError
 
     //Print the response
     response.getWriter().println(obj.toJSONString());
+
+    //Exit
+    return;
   }
 }
