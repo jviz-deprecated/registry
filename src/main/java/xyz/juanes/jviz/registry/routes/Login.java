@@ -1,12 +1,16 @@
 package xyz.juanes.jviz.registry.routes;
 
+import xyz.juanes.jviz.registry.Config;
+import xyz.juanes.jviz.registry.firebase.FirebaseConfig;
 import xyz.juanes.jviz.registry.firebase.FirebaseREST;
 import xyz.juanes.jviz.registry.firebase.FirebaseResponse;
 import xyz.juanes.jviz.registry.helpers.Crypto;
-import xyz.juanes.jviz.registry.helpers.HttpError;
+import xyz.juanes.jviz.registry.helpers.HttpOut;
 import xyz.juanes.jviz.registry.helpers.Token;
 
 import org.json.simple.JSONObject;
+
+import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,16 +18,21 @@ import java.io.IOException;
 
 public class Login extends HttpServlet
 {
+  //Init method
+  public void init(ServletConfig config){ Config.initFirebase(); }
+
+  //Get
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException
+  {
+    //Return the error
+    HttpOut.error(response, 405, "Method not allowed");
+  }
+
   //Post user and password
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException
   {
-    //Set the content type
-    response.setContentType("application/json");
-
-    //Get the username
+    //Get the user params
     String user_id = request.getParameter("user_id");
-
-    //Get tue user password
     String user_pwd = request.getParameter("user_pwd");
 
     //Get tue user data
@@ -33,9 +42,7 @@ public class Login extends HttpServlet
     if(res.isError() == true)
     {
       //Display internal error
-      HttpError.send(response, 500, "Error connecting to the database");
-
-      //Exit
+      HttpOut.error(response, 500, "Error connecting to the database");
       return;
     }
 
@@ -43,9 +50,7 @@ public class Login extends HttpServlet
     if(res.isNull() == true || res.getCode() != 200)
     {
       //Return user not found
-      HttpError.send(response, 404, "User not found");
-
-      //Exit
+      HttpOut.error(response, 404, "User not found");
       return;
     }
 
@@ -55,28 +60,34 @@ public class Login extends HttpServlet
       //Get the json object
       JSONObject obj = res.getBodyJSON();
 
-      //Convert the password to MD5
-      String pwd = Crypto.md5(user_pwd);
+      //Convert the password to base64
+      String pwd = Crypto.base64(user_pwd);
 
       //Check both passwords
-      if(obj.get("pwd") == pwd)
+      if(obj.get("pwd").equals(pwd) == true)
       {
-        //Generate the new token
-        String token = Token.generate(user_id);
+        //Initialize the JSON object
+        JSONObject out = new JSONObject();
+
+        //Add the new token
+        out.put("token", Token.generate(user_id));
+
+        //Return
+        HttpOut.send(response, 200, out);
+        return;
       }
       else
       {
         //Display error
-        HttpError.send(response, 401, "Incorrect password");
+        HttpOut.error(response, 401, "Incorrect password");
+        return;
       }
     }
     catch(Exception e)
     {
       //Return a new error
-      HttpError.send(response, 500, "Error getting the user info");
+      HttpOut.error(response, 500, "Error getting the user info");
+      return;
     }
-
-    //Exit
-    return;
   }
 }
