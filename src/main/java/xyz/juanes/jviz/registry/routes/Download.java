@@ -1,6 +1,7 @@
 package xyz.juanes.jviz.registry.routes;
 
 import org.json.simple.JSONObject;
+
 import xyz.juanes.jviz.registry.Config;
 import xyz.juanes.jviz.registry.firebase.FirebaseREST;
 import xyz.juanes.jviz.registry.firebase.FirebaseResponse;
@@ -35,10 +36,17 @@ public class Download extends HttpServlet
     FirebaseResponse res = FirebaseREST.get("modules/" + url[0]);
 
     //Check for null or error
-    if(res.isError() || res.isNull())
+    if(res.isError() == true)
     {
       //Display the error
       HttpOut.error(response, 500, "Error connecting to the database"); return;
+    }
+
+    //Check for empty response
+    if(res.isNull() == true)
+    {
+      //Display the error
+      HttpOut.error(response, 404, "Module not found"); return;
     }
 
     //Try reading the information
@@ -48,7 +56,7 @@ public class Download extends HttpServlet
       JSONObject obj = res.getBodyJSON();
 
       //Build the download url
-      String download = obj.get("repository") + Config.download.replace("{version}", url[1]);
+      String download = obj.get("repository") + Config.download.replace("{release}", url[1]);
 
       //Redirect
       response.sendRedirect(download);
