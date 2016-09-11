@@ -12,6 +12,16 @@ public class HttpOut
   //Send response
   public static void send(HttpServletResponse response, Integer code, JSONObject obj) throws IOException
   {
+    //Send the response
+    send(response, code, obj.toJSONString());
+
+    //Exit
+    return;
+  }
+
+  //Send response
+  public static void send(HttpServletResponse response, Integer code, String str) throws IOException
+  {
     //Set the content type
     response.setContentType("application/json");
 
@@ -19,7 +29,7 @@ public class HttpOut
     response.setStatus(code);
 
     //Print the response
-    response.getWriter().println(obj.toJSONString());
+    response.getWriter().println(str);
 
     //Exit
     return;
